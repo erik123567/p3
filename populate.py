@@ -3,7 +3,7 @@ from sqlalchemy.orm import sessionmaker
 
 from database_set import Team, Base, Player
 
-engine = create_engine('sqlite:///teamroster.db')
+engine = create_engine('sqlite:///teamroster2.db')
 # Bind the engine to the metadata of the Base class so that the
 # declaratives can be accessed through a DBSession instance
 Base.metadata.bind = engine
@@ -20,15 +20,15 @@ session = DBSession()
 
 
 # Roster for Bears
-team1 = Team(name="Bears")
+team1 = Team(name="TEAM1")
 
 session.add(team1)
 session.commit()
 
-player2 = Player(name="Jamal", description="Jamal description",
+player1 = Player(name="Jamal", description="Jamal description",
                       team=team1)
 
-session.add(player2)
+session.add(player1)
 session.commit()
 
 
@@ -37,45 +37,10 @@ player2 = Player(name="WIllis", description="WILSLDFSDFS",
 
 session.add(player2)
 session.commit()
+player3 = Player(name="doucd", description="WILSLDFdsrrSDFS",
+                      team=team1)
 
-
-# Roster for Falcons
-team2 = Team(name="Falcons")
-
-session.add(team2)
+session.add(player3)
 session.commit()
-
-player2 = Player(name="Tina", description="Tina descp",
-                      team=team2)
-
-session.add(player2)
-session.commit()
-
-
-player2 = Player(name="Linda", description="Linda description",
-                      team=team2)
-
-session.add(player2)
-session.commit()
-
-# Roster for Pandas
-team3 = Team(name="Pandas")
-
-session.add(team3)
-session.commit()
-
-player2 = Player(name="Pdadr", description="yusdr ",
-                      team=team3)
-
-session.add(player2)
-session.commit()
-
-
-player2 = Player(name="differ", 	description="beep description",
-                      team=team3)
-
-session.add(player2)
-session.commit()
-
 
 
