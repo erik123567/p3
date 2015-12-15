@@ -1,0 +1,25 @@
+<html>
+
+<body>
+
+<h1>{{team.name}}</h1>
+<a href='#'>Add Player </a>
+
+
+{% for i in players %}
+
+<div>
+
+<p>{{i.name}}</p>
+
+<p>{{i.description}}</p>
+<a href='{{url_for('editPlayer', team_id = team.id, player_id = i.id )}}'>Edit</a></br>
+<a href='{{url_for('deletePlayer', team_id = team.id, player_id = i.id)}}'>Delete</a>
+
+</div>
+
+
+{% endfor %}
+</body>
+
+</html>

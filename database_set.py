@@ -25,7 +25,7 @@ class Player(Base):
     team = relationship(Team)
 
 
-engine = create_engine('sqlite:///teamroster2.db')
+engine = create_engine('sqlite:///teamroster.db')
 
 
 Base.metadata.create_all(engine)

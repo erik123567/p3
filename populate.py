@@ -3,7 +3,7 @@ from sqlalchemy.orm import sessionmaker
 
 from database_set import Team, Base, Player
 
-engine = create_engine('sqlite:///teamroster2.db')
+engine = create_engine('sqlite:///teamroster.db')
 # Bind the engine to the metadata of the Base class so that the
 # declaratives can be accessed through a DBSession instance
 Base.metadata.bind = engine
@@ -20,27 +20,62 @@ session = DBSession()
 
 
 # Roster for Bears
-team1 = Team(name="TEAM1")
+team1 = Team(name="Bears")
 
 session.add(team1)
 session.commit()
-
-player1 = Player(name="Jamal", description="Jamal description",
+player1 = Player(name="Jamal", description="Jamal from florida",
                       team=team1)
-
 session.add(player1)
 session.commit()
 
 
-player2 = Player(name="WIllis", description="WILSLDFSDFS",
+player2 = Player(name="WIllis", description="willis from wiliyville",
                       team=team1)
 
 session.add(player2)
 session.commit()
-player3 = Player(name="doucd", description="WILSLDFdsrrSDFS",
+player3 = Player(name="corey", description="corey from atlanta",
                       team=team1)
 
 session.add(player3)
 session.commit()
 
+# ROSTER FOR LION
+
+team2 = Team(name="Lions")
+session.add(team2)
+session.commit()
+player1 = Player(name="Too", description="too decriptsd ",
+                      team=team2)
+session.add(player1)
+session.commit()
+
+player2 = Player(name="josh", description="la toole",
+                      team=team2)
+session.add(player2)
+session.commit()
+player3 = Player(name="barnad", description="fbradrr brandrr ",
+                      team=team2)
+session.add(player3)
+session.commit()
+
+# ROSTER FOR GIants
+
+team3 = Team(name="Giants")
+session.add(team3)
+session.commit()
+player1 = Player(name="peter", description="emptyd ",
+                      team=team3)
+session.add(player1)
+session.commit()
+
+player2 = Player(name="mumbo", description="munbo eat",
+                      team=team3)
+session.add(player2)
+session.commit()
+player3 = Player(name="lourl", description="lauren desc ",
+                      team=team3)
+session.add(player3)
+session.commit()
 

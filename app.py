@@ -1,11 +1,11 @@
-from flask import Flask
+from flask import Flask , render_template, request, redirect, url_for
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 from database_set import Base, Team, Player
 
 app = Flask(__name__)
 
-engine = create_engine('sqlite:///teamroster2.db')
+engine = create_engine('sqlite:///teamroster.db')
 Base.metadata.bind = engine
 
 DBSession = sessionmaker(bind=engine)
@@ -14,33 +14,67 @@ session = DBSession()
 
 @app.route('/')
 def showTeams():
-    team = session.query(Team).all()
+    teams = session.query(Team).all()
+    team = session.query(Team).first()
+    players = session.query(Player).all()
+    return render_template('showRosters.html',teams=teams, players=players)
 
-    output = ''
-    for i in team:
-        players = session.query(Player).filter_by(team_id=i.id)
-        output += i.name + ' ROSTER' + '%s' % i.id
-        output += '</br>'
-        for p in players:
-            output += '%s' % p.name
-            output += '%s' % p.id
-            output += '</br>'
-        output += '</br>'
-        
+@app.route('/<user_id>/add')
+def addTeam(user_id):
+    return render_template('newTeam.html',user_id=user_id)
 
-    return output
+@app.route('/<user_id>/signedIn/')
+def showTeamsLoggedIn(user_id):
+    teams = session.query(Team).all()
+    team = session.query(Team).first()
+    players = session.query(Player).all()
+    return render_template('showRosterLoggedIn.html',teams=teams, players=players,user_id=user_id)
 	
-
+	
 @app.route('/roster/<int:team_id>/')
 def showRoster(team_id):
     team = session.query(Team).filter_by(id = team_id).one()
     players = session.query(Player).filter_by(team_id=team_id)
-    output = '%s' % team.name + '</br>'
-    for p in players:
-        output += '%s' % p.name
-        output += '%s' % p.id
-        output += '</br>'
+    return render_template('showTeam.html', team = team, players = players)
+
+
+@app.route('/<int:team_id>/new', methods=['GET','POST'])
+@app.route('/roster/<int:team_id>/new/', methods=['GET','POST'])
+def addPlayer(team_id):
+    team = session.query(Team).filter_by(id = team_id).one()
+    if request.method == 'POST':
+        newPlayer = Player(name = request.form['name'], team_id = team.id)
+        session.add(newPlayer)
+        session.commit()
+        return redirect(url_for('showRoster', team_id = team.id))
+    else:
+        return render_template('addplayer.html', team_id=team.id)
+        
+    
+
+@app.route('/<int:team_id>/editTeam/')
+def editTeam(team_id):
+    team = session.query(Team).filter_by(id = team_id).one()
+    return "page to edit %s" % team.name
+
+@app.route('/<int:team_id>/<int:player_id>/delete')
+def deletePlayer(team_id, player_id):
+    team = session.query(Team).filter_by(id = team_id).one()
+    player = session.query(Player).filter_by(id = player_id).one()
+    output = ''
+    output += 'Method for deleting %s' % player.name
+    output += ' from the  %s' % team.name
     return output
+
+@app.route('/<int:team_id>/<int:player_id>/edit/')
+def editPlayer(team_id, player_id):
+    player = session.query(Player).filter_by(id = player_id).one()
+    return "page to edit %s" % player.name
+
+@app.route('/<int:team_id>/deleteTeam')
+def deleteTeam(team_id):
+    team = session.query(Team).filter_by(id = team_id).one()
+    return render_template('deleteTeam.html', team = team)
 
 if __name__ == '__main__':
     app.debug = True

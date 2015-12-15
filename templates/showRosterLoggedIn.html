@@ -1,0 +1,32 @@
+<html>
+
+<body>
+<h1 class="top"> The League </h1> 
+<h1> Welcome {{user_id}} </h1>
+<h1> Current Teams: </h1>
+<a href='{{url_for('addTeam', user_id = user_id )}}'>Add Team</a>
+<hr>
+<div id ='roster'>
+	{% for t in teams %}  
+		<div id ='teams'>
+		<h2><b> {{t.name}}:</b></h2>
+		<a href='{{url_for('deleteTeam', team_id = t.id)}}'> Delete Team </a>
+	{% for p in  players%}
+	{% if p.team_id == t.id %}
+	<p><i>{{p.name}}</i></p>
+	<a href='{{url_for('editPlayer', team_id = t.id, player_id = p.id )}}'>Edit</a>
+	<a href='{{url_for('deletePlayer', team_id = t.id, player_id = p.id)}}'>Delete</a>
+	{% endif %}
+
+  {% endfor %}
+  <hr>
+	</div>
+	{% endfor %}
+</div>
+
+
+
+
+</body>
+
+</html>

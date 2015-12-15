@@ -1,0 +1,27 @@
+<html>
+
+<body>
+<h1 class="top"> The League </h1>
+<h1> Current Teams: </h1>
+
+<div id ='roster'>
+	{% for t in teams %}  
+		<div id ='teams'>
+		<h2> {{t.name}}</h2>
+		<p>Players: </p>
+	{% for p in  players%}
+	{% if p.team_id == t.id %}
+	<p>{{p.name}}</p>
+	{% endif %}
+
+  {% endfor %}
+	</div>
+	{% endfor %}
+</div>
+
+
+
+
+</body>
+
+</html>
