@@ -61,10 +61,8 @@ def editTeam(team_id):
 def deletePlayer(team_id, player_id):
     team = session.query(Team).filter_by(id = team_id).one()
     player = session.query(Player).filter_by(id = player_id).one()
-    output = ''
-    output += 'Method for deleting %s' % player.name
-    output += ' from the  %s' % team.name
-    return output
+    return render_template('deletePlayer.html', team = team, player = player)
+
 
 @app.route('/<int:team_id>/<int:player_id>/edit/')
 def editPlayer(team_id, player_id):
