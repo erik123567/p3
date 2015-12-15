@@ -1,15 +1,11 @@
 <html>
 <body>
-<h1> Edit PLAYER </h1>
+<h1> Edit {{player.name}} from {{team.name}} </h1>
 
-<form action="{{url_for('editPlayer', team_id=team.id )}}" method = 'POST'>
-
-<p>Name:</p>
-
-<input type='text' size='30' name='name'>
-
-<input type='submit' value='Create'>
-
+<form action="{{url_for('editPlayer', team_id=team.id, player_id = player.id)}}" method = 'post'
+<p>Name: </p>
+<input type='text' size = '30' name = 'name' placeholder={{player.name}}>
+<input type='submit' value='Save'>
 </form>
 
 </body>

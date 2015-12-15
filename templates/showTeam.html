@@ -1,9 +1,12 @@
 <html>
 
 <body>
-
-<h1>{{team.name}}</h1>
-<a href='#'>Add Player </a>
+<div>
+<h1>{{team.name}} </h1>
+<a href='{{url_for('editTeam', team_id = team.id)}}'>Edit </a>
+</div>
+</br>
+<a href='{{url_for('addPlayer',team_id = team.id)}}'>Add Player </a>
 
 
 {% for i in players %}
