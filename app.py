@@ -12,22 +12,50 @@ DBSession = sessionmaker(bind=engine)
 session = DBSession()
 
 
+
+@app.route('/signIn/')
+def signIn():
+    return render_template('signIn.html')
+
+@app.route('/signUp/')
+def signUp():
+    return render_template('signUp.html')
+
+@app.route('/<int:team_id>/out/')
+def teamOut(team_id):
+    team = session.query(Team).filter_by(id = team_id).one()
+    players = session.query(Player).filter_by(team_id = team_id).all()
+    return render_template('teamOut.html', team=team, players=players)
+	
+@app.route('/<int:user_id>/profile/')
+def profile(user_id):
+    teams = session.query(Team).all()
+    players = session.query(Player).all()
+    return render_template('profile.html', teams=teams, players=players,user_id=user_id)
+
+@app.route('/<int:user_id>/<int:team_id>/in/')
+def teamIn(user_id, team_id):
+    team = session.query(Team).filter_by(id = team_id).one()
+    players = session.query(Player).filter_by(team_id = team_id).all()
+    return render_template('teamIn.html', team=team, players=players,user_id=user_id)
+
 @app.route('/')
-def showTeams():
+def homeScreen():
     teams = session.query(Team).all()
     team = session.query(Team).first()
     players = session.query(Player).all()
-    return render_template('showRosters.html',teams=teams, players=players)
+    return render_template('teams.html',teams=teams, players=players)
 
-@app.route('/<int:user_id>/add', methods=['GET','POST'])
+
+@app.route('/<int:user_id>/addTeam/', methods=['GET','POST'])
 def addTeam(user_id):
     if request.method == 'POST':
         newTeam = Team(name = request.form['name'])
         session.add(newTeam)
         session.commit()
-        return redirect(url_for('showTeamsLoggedIn', user_id=user_id))
+        return redirect(url_for('teamIn', user_id=user_id,team_id=newTeam.id))
     else:
-        return render_template('newTeam.html',user_id=user_id)
+        return render_template('addTeam.html',user_id=user_id)
 
 
 @app.route('/<int:user_id>/signedIn/')
@@ -45,42 +73,45 @@ def showRoster(team_id):
     return render_template('showTeam.html', team = team, players = players)
 
 
-@app.route('/<int:team_id>/new', methods=['GET','POST'])
-@app.route('/roster/<int:team_id>/new/', methods=['GET','POST'])
-def addPlayer(team_id):
+@app.route('/<int:user_id>/<int:team_id>/newPlayer/', methods=['GET','POST'])
+def addPlayer(user_id,team_id):
     team = session.query(Team).filter_by(id = team_id).one()
     if request.method == 'POST':
         if request.form['name']:
             newPlayer = Player(name = request.form['name'], team_id = team.id)
             session.add(newPlayer)
             session.commit()
-            return redirect(url_for('showRoster', team_id = team.id))
+            return redirect(url_for('profile',user_id=user_id))
     else:
-        return render_template('addPlayer.html', team_id=team.id,team=team)
+        return render_template('addPlayer.html',user_id=user_id,team_id=team.id,team=team)
         
     
 
-@app.route('/<int:team_id>/editTeam/', methods=['GET','POST'])
-def editTeam(team_id):
+@app.route('/<int:user_id>/<int:team_id>/editTeam/', methods=['GET','POST'])
+def editTeam(user_id,team_id):
     team = session.query(Team).filter_by(id = team_id).one()
     if request.method == 'POST':
         if request.form['name']:
             team.name = request.form['name']
         session.add(team)
         session.commit()
-        return redirect(url_for('showRoster',team_id = team_id))
+        return redirect(url_for('teamIn',user_id=user_id,team_id = team_id))
     else:
-        return render_template('editTeam.html', team=team)
+        return render_template('editTeam.html',user_id=user_id, team=team)
 
-@app.route('/<int:team_id>/<int:player_id>/delete')
-def deletePlayer(team_id, player_id):
+@app.route('/<int:user_id>/<int:team_id>/<int:player_id>/delete/',  methods=['GET','POST'])
+def deletePlayer(user_id, team_id, player_id):
     team = session.query(Team).filter_by(id = team_id).one()
-    player = session.query(Player).filter_by(id = player_id).one()
-    return render_template('deletePlayer.html', team = team, player = player)
+    itemToDelete = session.query(Player).filter_by(id=player_id).one()
+    if request.method == 'POST':
+        session.delete(itemToDelete)
+        session.commit()
+        return redirect(url_for('teamIn', user_id=user_id, team_id=team.id))
+    else:
+        return render_template('deletePlayer.html',user_id=user_id, itemToDelete=itemToDelete, team=team)
 
-
-@app.route('/<int:team_id>/<int:player_id>/edit/', methods=['GET','POST'])
-def editPlayer(team_id, player_id):
+@app.route('/<int:user_id>/<int:team_id>/<int:player_id>/editPlayer', methods=['GET','POST'])
+def editPlayer(user_id, team_id, player_id):
     player = session.query(Player).filter_by(id = player_id).one()
     team = session.query(Team).filter_by(id=team_id).one()
     if request.method == 'POST':
@@ -88,13 +119,20 @@ def editPlayer(team_id, player_id):
             player.name = request.form['name']
         session.add(player)
         session.commit()
-        return redirect(url_for('showRoster',team_id = team_id))
+        return redirect(url_for('teamIn',user_id=user_id, team_id = team.id))
     else:
-        return render_template('editPlayer.html', team=team, player_id=player_id, player=player)
+        return render_template('editPlayer.html',user_id=user_id, team=team, player_id=player_id, player=player)
         
-@app.route('/<int:team_id>/deleteTeam', methods=['GET','POST'])
-def deleteTeam(team_id):
+@app.route('/<int:user_id>/<int:team_id>/deleteTeam/', methods=['GET','POST'])
+def deleteTeam(user_id, team_id):
     team = session.query(Team).filter_by(id = team_id).one()
+    if request.method == 'POST':
+        session.delete(team)
+        session.commit()
+        return redirect(url_for('profile', user_id=user_id))
+    else:
+        return render_template('deleteTeam.html',user_id=user_id, team_id=team.id, team=team)
+
         
 
 if __name__ == '__main__':

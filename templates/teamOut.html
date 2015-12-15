@@ -1,0 +1,21 @@
+<html>
+
+<body>
+<h1> {{team.name}}</h1>
+<div id='teamBox'>
+{% for p in players %}
+<p><b>{{p.name}}</b></p>
+<p>{{p.description}}</p>
+{% endfor %}
+{% if not players %}
+<h2>There are no players! </h2>
+{% endif %}
+</div>
+
+<a href='{{url_for('homeScreen')}}'>BACK </a>
+
+
+
+</body>
+
+</html>

@@ -1,9 +1,14 @@
 <html>
 
 <body>
-INSERT FORM HERE 
-<h1> Are you sure you want to delete {{player.name}} from {{team.name}}</h1>
 
+<h1> Are you sure you want to delete {{itemToDelete.name}} from {{team.name}}</h1>
+<form action='{{url_for('deletePlayer', user_id = user_id, team_id= team.id, player_id=itemToDelete.id)}}' method = 'POST'>
+<input type='submit' name='Delete'>
+</form>
+<br>
+
+<a href="{{url_for('teamIn',user_id=user_id, team_id=team.id)}}">Cancel</a>
 </body>
 
 </html>

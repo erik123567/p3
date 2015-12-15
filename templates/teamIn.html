@@ -1,0 +1,29 @@
+<html>
+
+<body>
+<h1> {{team.name}}
+<a href='{{url_for('editTeam',user_id=user_id, team_id = team.id)}}'>Edit </a>
+</h1> 
+<a href='{{url_for('deleteTeam', user_id=user_id, team_id = team.id)}}'>Delete Team</a>
+<hr>
+<a href='{{url_for('addPlayer',user_id=user_id,team_id=team.id)}}'><h2> Add new Player </h2></a>
+<div id='teamBox'>
+{% for p in players %}
+<p><b>{{p.name}}</b></p>
+<p>{{p.description}}</p>
+<a href='{{url_for('editPlayer', user_id=user_id, team_id=team.id, player_id=p.id)}}'>Edit</a>
+<a href='{{url_for('deletePlayer',user_id=user_id,team_id=team.id,player_id=p.id)}}'>Delete </a>
+<hr>
+{% endfor %}
+{% if not players %}
+<h2>There are no players! </h2>
+{% endif %}
+</div>
+
+<a href='{{url_for('profile',user_id=user_id, team_id=team.id)}}'>BACK </a>
+
+
+
+</body>
+
+</html>

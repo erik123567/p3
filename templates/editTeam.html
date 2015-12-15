@@ -2,11 +2,12 @@
 <body>
 <h1> Edit {{team.name}} </h1>
 
-<form action="{{url_for('editTeam', team_id=team.id)}}" method = 'post'
+<form action="{{url_for('editTeam', team_id=team.id,user_id=user_id)}}" method = 'post'
 <p>Name: </p>
 <input type='text' size = '30' name = 'name' placeholder={{team.name}}>
 <input type='submit' value='Save'>
 </form>
+<a href="{{url_for('teamIn',user_id=user_id,team_id=team.id)}}">Cancel </a>
 
 </body>
 </html>

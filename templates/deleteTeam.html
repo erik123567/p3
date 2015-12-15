@@ -1,9 +1,14 @@
 <html>
 
 <body>
-INSERT FORM HERE 
-<h1> Are you sure you want to delete {{team.name}}</h1>
 
+<h1> Are you sure you want to delete {{team.name}}</h1>
+<form action='{{url_for('deleteTeam', user_id = user_id, team_id= team.id)}}' method = 'POST'>
+<input type='submit' name='Delete'>
+</form>
+<br>
+
+<a href="{{url_for('profile',user_id=user_id)}}">Cancel</a>
 </body>
 
 </html>
