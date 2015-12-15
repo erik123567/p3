@@ -19,15 +19,17 @@ def showTeams():
     players = session.query(Player).all()
     return render_template('showRosters.html',teams=teams, players=players)
 
-@app.route('/<user_id>/add', methods=['GET','POST'])
+@app.route('/<int:user_id>/add', methods=['GET','POST'])
 def addTeam(user_id):
     if request.method == 'POST':
         newTeam = Team(name = request.form['name'])
         session.add(newTeam)
         session.commit()
-    return render_template('newTeam.html',user_id=user_id)
+        return redirect(url_for('showTeamsLoggedIn', user_id=user_id))
+    else:
+        return render_template('newTeam.html',user_id=user_id)
 
-@app.route('/<user_id>/signedIn/')
+@app.route('/<int:user_id>/signedIn/')
 def showTeamsLoggedIn(user_id):
     teams = session.query(Team).all()
     team = session.query(Team).first()
