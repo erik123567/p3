@@ -1,8 +1,13 @@
 <html>
 
 <body>
-INSERT FORM HERE 
+<h1> Create Team
 <h1> Created by  {{user_id}}</h1>
+<form action="{{url_for('addTeam', user_id = user_id)}}" method = 'post'
+<p>Name: </p>
+<input type='text' size = '30' name = 'name'>
+<input type='submit' value='Create'>
+</form>
 
 </body>
 
