@@ -1,0 +1,13 @@
+<html>
+<head>
+	<link rel=stylesheet type=text/css href="{{ url_for('static', filename='styles.css') }}">
+	</head>
+<body>
+<h1>Name: {{player.name}}</h1>
+</br>
+<h1> Description:  {{player.description}}
+</br>
+<a href='{{url_for('editPlayer', user_id = user_id, team_id = player.team_id, player_id = player.id)}}'>Edit</a>
+<a href='{{url_for('profile', user_id = user_id)}}'>Home </a>
+</body>
+</html>

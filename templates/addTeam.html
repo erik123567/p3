@@ -1,4 +1,7 @@
 <html>
+<head>
+	<link rel=stylesheet type=text/css href="{{ url_for('static', filename='styles.css') }}">
+	</head>
 
 <body>
 <h1> Create Team
@@ -8,6 +11,7 @@
 <input type='text' size = '30' name = 'name'>
 <input type='submit' value='Create'>
 </form>
+<a href='{{url_for('profile', user_id = user_id)}}'>Cancel </a>
 
 </body>
 

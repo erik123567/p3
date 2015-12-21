@@ -3,11 +3,23 @@
 <body
 <div id='header'>
 	<h1> The League </h1>
-	<h1> Welcome {{user_id}}
+	<h1> Welcome {{user.id}} {{user.username}}
 	<a href='{{url_for('homeScreen')}}'> Logout </a>
 
 </div>
+{% with messages = get_flashed_messages() %}
+{% if messages %}
 
+<ul>
+{% for message in messages %}
+  <li><strong>{{message}}</strong></li>
+  {% endfor %}
+</ul>
+{% endif %}
+{% endwith %}
+<br>
+
+<a href='{{url_for('addTeam',user_id=user.id)}}'> Create Team </a>
 <h1> Current Teams: </h1>
 <div id='teamGrid'>
 {% for t in teams %}
@@ -16,7 +28,7 @@
 <ul> 
 {% for p in players %}
 {% if p.team_id == t.id %}
-  <li><a href='#'>{{p.name}}</li>
+  <li><a href='{{url_for('showPlayerIn', user_id = user_id, player_id = p.id)}}'>{{p.name}}</li>
   {% endif %}
   {% endfor %}
 

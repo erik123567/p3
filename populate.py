@@ -1,7 +1,7 @@
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 
-from database_set import Team, Base, Player
+from database_set import Team, Base, Player, User
 
 engine = create_engine('sqlite:///teamroster.db')
 # Bind the engine to the metadata of the Base class so that the
@@ -78,4 +78,6 @@ player3 = Player(name="lourl", description="lauren desc ",
                       team=team3)
 session.add(player3)
 session.commit()
+
+
 

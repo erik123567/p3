@@ -1,11 +1,18 @@
 <html>
+<head>
+	<link rel=stylesheet type=text/css href="{{ url_for('static', filename='styles.css') }}">
+	</head>
 <body>
 <h1> Edit {{player.name}} from {{team.name}} </h1>
 
 <form action="{{url_for('editPlayer',user_id=user_id,team_id=team.id, player_id = player.id)}}" method = 'post'
 <p>Name: </p>
 <input type='text' size = '30' name = 'name' placeholder={{player.name}}>
-<input type='submit' value='Save'>
+<br>
+<p>Description:</p>
+<input type='text' size='250' name='description' placeholder = {{player.description}}>
+</br>
+<input type='submit' value='Create'>
 </form>
 <a href='{{url_for('teamIn',user_id=user_id,team_id=team.id)}}'> Cancel </a>
 

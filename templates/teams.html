@@ -1,4 +1,7 @@
 <html>
+<head>
+	<link rel=stylesheet type=text/css href="{{ url_for('static', filename='styles.css') }}">
+	</head>
 
 <body
 <div id='header'>
@@ -16,7 +19,7 @@
 <ul> 
 {% for p in players %}
 {% if p.team_id == t.id %}
-  <li>{{p.name}}</li>
+<li><a href='{{url_for('showPlayerOut', player_id = p.id)}}'>{{p.name}}</a></li>
   {% endif %}
   {% endfor %}
 
